@@ -13,7 +13,12 @@ _Enabling web apps to provide JavaScript-based tools that can be accessed by AI 
 
 ## TL;DR
 
-We propose a new JavaScript interface that allows web developers to expose their web application functionality as "tools" - JavaScript functions with natural language descriptions and structured schemas that can be invoked by AI agents, browser assistants, and assistive technologies. Web pages that use WebMCP can be thought of as [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) servers that implement tools in client-side script instead of on the backend. WebMCP enables collaborative workflows where users and agents work together within the same web interface, leveraging existing application logic while maintaining shared context and user control.
+We propose a new JavaScript interface that allows web developers to expose their web application functionality as "tools" - JavaScript functions with natural language descriptions and structured schemas that can be invoked by AI agents, browser assistants, and assistive technologies.
+WebMCP lets web pages expose functionality as tools using a browser-native API -- unlike MCP servers, which run on the backend, WebMCP tools are defined in client-side script and don't implement the MCP protocol itself though early community projects like MCP-B did bridge to MCP via localhost websockets
+
+WebMCP enables collaborative workflows where users and agents work together within the same web interface, leveraging existing application logic while maintaining shared context and user control.
+
+Note: WebMCP is a browser-native API for exposing web app functionality as tools -- it does not implement or extend the MCP protocol itself, though early community projects like MCP-B did bridge to MCP via localhost websockets
 
 For the technical details of the proposal, code examples, API shape, etc. see [proposal.md](./docs/proposal.md).
 
