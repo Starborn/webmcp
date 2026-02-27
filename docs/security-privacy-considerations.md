@@ -37,9 +37,14 @@ These capabilities enable powerful user experiences but also create new risks th
   - [1. Prompt Injection Attacks](#1-prompt-injection-attacks)
     - [Metadata / Description Attacks (Tool Poisoning)](#1-metadata--description-attacks-tool-poisoning)
     - [Output Injection Attacks](#2-output-injection-attacks)
+    - [Tool Implementation as Attack Targets](#3-tool-implementation-as-attack-targets)
   - [2. Misrepresentation of Intent](#2-misrepresentation-of-intent)
   - [3. Privacy Leakage Through Over-Parameterization](#3-privacy-leakage-through-over-parameterization)
 - [Open Questions for Discussion](#open-questions-for-discussion)
+- [Mitigations](#mitigations)
+- [Proposed Mitigations](#proposed-mitigations)
+  - [Consider restricting maximum input lengths](#consider-restricting-maximum-input-lengths)
+  - [Supporting interoperable probabilistic defense structures through shared attack eval datasets](#supporting-interoperable-probabilistic-defense-structures-through-shared-attack-eval-datasets)
 - [Next Steps](#next-steps)
 - [References](#references)
 
@@ -334,6 +339,28 @@ To advance the security and privacy posture of WebMCP, we need community input o
 - How do we prevent permission fatigue while maintaining user control?
 - Should some tool categories require elevated permissions or review processes?
 - Related: [Issue #44 - Action-specific permission](https://github.com/webmachinelearning/webmcp/issues/44)
+
+## Mitigations
+
+### Proposed Mitigations
+
+#### [Consider restricting maximum input lengths](https://github.com/webmachinelearning/webmcp/issues/73)
+
+**What:** Restrict the maximum amount of characters 
+
+**Threats addressed:** Metadata / Description Attacks (Tool Poisoning)
+
+**How:** This restriction would not fully solve prompt injection attacks but helps shrink the possible universe of attacks, preventing longer prompts that leverage e.g. repetition and [sockpuppeting](https://arxiv.org/pdf/2601.13359) to convince agents of malicious tasks.
+
+#### [Supporting interoperable probabilistic defense structures through shared attack eval datasets](https://github.com/webmachinelearning/webmcp/issues/106)
+
+**What:** Shared evals for prompt injection attacks against WebMCP 
+
+**Threats addressed:** Prompt Injection Attacks (potentially Privacy Leakage Through Over-Parameterization)
+
+**How:** Ensuring an interoperable basis for prompt injection defense, by requiring any implementer to protect against at least the attacks in that dataset
+
+... add more issues here
 
 ## Next Steps
 
