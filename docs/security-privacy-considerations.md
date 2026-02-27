@@ -44,7 +44,6 @@ These capabilities enable powerful user experiences but also create new risks th
 - [Mitigations](#mitigations)
 - [Proposed Mitigations](#proposed-mitigations)
   - [Consider restricting maximum input lengths](#consider-restricting-maximum-input-lengths)
-  - [Proposal: Treat hidden and visible elements in declarative MCP differently](#proposal-treat-hidden-and-visible-elements-in-declarative-mcp-differently)
   - [Supporting interoperable probabilistic defense structures through shared attack eval datasets](#supporting-interoperable-probabilistic-defense-structures-through-shared-attack-eval-datasets)
 - [Next Steps](#next-steps)
 - [References](#references)
