@@ -1,3 +1,8 @@
+Here is the complete `index.bs` file with the one-sentence addition for PR 4. The only change is at the end of the agent definition:
+
+---
+
+```
 <pre class='metadata'>
 Title: WebMCP
 Shortname: webmcp
@@ -11,4 +16,199 @@ Editor: Khushal Sagar, Google https://www.google.com, khushalsagar@google.com, w
 Editor: Dominic Farolino, Google https://www.google.com, domfarolino@google.com, w3cid 102763
 Abstract: The WebMCP API enables web applications to provide JavaScript-based tools to AI agents.
 Markup Shorthands: markdown yes, css no
-Complain About: accidental-2119 yes, missing-example-ids y
+Complain About: accidental-2119 yes, missing-example-ids yes
+Assume Explicit For: yes
+Default Biblio Status: current
+Boilerplate: omit conformance
+Indent: 2
+Die On: warning
+</pre>
+
+<style>
+/* domintro and XXX from https://resources.whatwg.org/standard.css */
+.domintro {
+  position: relative;
+  color: green;
+  background: #DDFFDD;
+  margin: 2.5em 0 2em 0;
+  padding: 1.5em 1em 0.5em 2em;
+}
+
+.domintro dt, .domintro dt * {
+  color: black;
+  font-size: inherit;
+}
+.domintro dd {
+  margin: 0.5em 0 1em 2em; padding: 0;
+}
+.domintro dd p {
+  margin: 0.5em 0;
+}
+.domintro::before {
+  content: 'For web developers (non-normative)';
+  background: green;
+  color: white;
+  padding: 0.15em 0.25em;
+  font-style: normal;
+  position: absolute;
+  top: -0.8em;
+  left: -0.8em;
+}
+
+.XXX {
+  color: #D50606;
+  background: white;
+  border: solid #D50606;
+}
+
+/* dl.props from https://resources.whatwg.org/standard.css */
+dl.props { display: grid; grid-template-columns: max-content auto; row-gap: 0.25em; column-gap: 1em; }
+dl.props > dt { grid-column-start: 1; margin: 0; }
+dl.props > dd { grid-column-start: 2; margin: 0; }
+p + dl.props { margin-top: -0.5em; }
+
+/* Put nice boxes around each algorithm. */
+[data-algorithm]:not(.heading) {
+  padding: .5em;
+  border: thin solid #ddd; border-radius: .5em;
+  margin: .5em calc(-0.5em - 1px);
+}
+[data-algorithm]:not(.heading) > :first-child {
+  margin-top: 0;
+}
+[data-algorithm]:not(.heading) > :last-child {
+  margin-bottom: 0;
+}
+[data-algorithm] [data-algorithm] {
+  margin: 1em 0;
+}
+</style>
+
+<h2 id="intro">Introduction</h2>
+
+WebMCP API is a new JavaScript interface that allows web developers to expose their web application functionality as "tools" - JavaScript functions with natural language descriptions and structured schemas that can be invoked by [=agents=], [=browser's agents=], and [=assistive technologies=]. Web pages that use WebMCP can be thought of as Model Context Protocol [[!MCP]] servers that implement tools in client-side script instead of on the backend. WebMCP enables collaborative workflows where users and agents work together within the same web interface, leveraging existing application logic while maintaining shared context and user control.
+
+<h2 id="terminology">Terminology</h2>
+
+<!--
+TODO: Define any reusable high-level terms here that are not specific to algorithms and not defined elsewhere (https://respec.org/xref/), consider exporting (https://speced.github.io/bikeshed/#dfn-export) if useful for other specs
+-->
+
+An <dfn>agent</dfn> is an autonomous assistant that can understand a user's goals and take actions on the user's behalf to achieve them. Today, these are typically implemented by large language model (LLM) based [=AI platforms=], interacting with users via text-based chat interfaces. In the context of this specification, agents operate within or in coordination with an active browser session where a human user is present.
+
+A <dfn>browser's agent</dfn> is an [=agent=] provided by or through the browser that could be built directly into the browser or hosted by it, for example, via an extension or plug-in.
+
+An <dfn>AI platform</dfn> is a provider of agentic assistants such as OpenAI's ChatGPT, Anthropic's Claude, or Google's Gemini.
+
+<h2 id="security-privacy">Security and privacy considerations</h2>
+
+<!--
+TODO: Reuse as applicable
+https://github.com/webmachinelearning/webmcp/blob/main/docs/security-privacy-considerations.md
+-->
+
+<h2 id="accessibility">Accessibility considerations</h2>
+
+<h2 id="api">API</h2>
+
+<!--
+TODO: Sketch initial algorithms, define attributes and methods etc.
+https://github.com/webmachinelearning/webmcp/blob/main/docs/proposal.md#api
+https://dlaliberte.github.io/bikeshed-intro/#a-strategy-for-incremental-development
+-->
+
+<h3 id="navigator-extension">Extensions to the {{Navigator}} Interface</h3>
+
+The {{Navigator}} interface is extended to provide access to the {{ModelContext}}.
+
+<xmp class="idl">
+partial interface Navigator {
+  [SecureContext, SameObject] readonly attribute ModelContext modelContext;
+};
+</xmp>
+
+<h3 id="model-context-container">ModelContext Interface</h3>
+
+The {{ModelContext}} interface provides methods for web applications to register and manage tools that can be invoked by [=agents=].
+
+<xmp class="idl">
+[Exposed=Window, SecureContext]
+interface ModelContext {
+  undefined provideContext(optional ModelContextOptions options = {});
+  undefined clearContext();
+  undefined registerTool(ModelContextTool tool);
+  undefined unregisterTool(DOMString name);
+};
+</xmp>
+
+<dl class="domintro">
+  <dt><code><var ignore>navigator</var>.{{Navigator/modelContext}}.{{ModelContext/provideContext(options)}}</code></dt>
+  <dd>
+    <p>Registers the provided context (tools) with the browser. This method clears any pre-existing tools and other context before registering the new ones.
+  </dd>
+
+  <dt><code><var ignore>navigator</var>.{{Navigator/modelContext}}.{{ModelContext/clearContext()}}</code></dt>
+  <dd>
+    <p>Unregisters all context (tools) with the browser.
+  </dd>
+
+  <dt><code><var ignore>navigator</var>.{{Navigator/modelContext}}.{{ModelContext/registerTool(tool)}}</code></dt>
+  <dd>
+    <p>Registers a single tool without clearing the existing set of tools. The method throws an error, if a tool with the same name already exists, or if the {{ModelContextTool/inputSchema}} is invalid.
+  </dd>
+
+  <dt><code><var ignore>navigator</var>.{{Navigator/modelContext}}.{{ModelContext/unregisterTool(name)}}</code></dt>
+  <dd>
+    <p>Removes the tool with the specified name from the registered set.
+  </dd>
+</dl>
+
+<div algorithm>
+The <dfn method for=ModelContext>provideContext(<var ignore>options</var>)</dfn> method steps are:
+
+1. TODO: fill this out.
+
+</div>
+
+<div algorithm>
+The <dfn method for=ModelContext>clearContext()</dfn> method steps are:
+
+1. TODO: fill this out.
+
+</div>
+
+
+<div algorithm>
+The <dfn method for=ModelContext>registerTool(<var ignore>tool</var>)</dfn> method steps are:
+
+1. TODO: fill this out.
+
+</div>
+
+<div algorithm>
+The <dfn method for=ModelContext>unregisterTool(<var ignore>name</var>)</dfn> method steps are:
+
+1. TODO: fill this out.
+
+</div>
+
+<h4 id="model-context-options">ModelContextOptions Dictionary</h4>
+
+<xmp class="idl">
+dictionary ModelContextOptions {
+  sequence<ModelContextTool> tools = [];
+};
+</xmp>
+
+<dl class="domintro">
+  <dt><code><var ignore>options</var>["{{ModelContextOptions/tools}}"]</code></dt>
+  <dd>
+    <p>A list of {{ModelContextOptions/tools}} to register with the browser. Each tool name in the list is expected to be unique.
+  </dd>
+</dl>
+
+<h4 id="model-context-tool">ModelContextTool Dictionary</h4>
+
+The {{ModelContextTool}} dictionary describes a tool that can be invoked by [=agents=].
+
+<xmp class="idl">
