@@ -1,8 +1,4 @@
-Here is the complete `index.bs` file with the one-sentence addition for PR 4. The only change is at the end of the agent definition:
 
----
-
-```
 <pre class='metadata'>
 Title: WebMCP
 Shortname: webmcp
